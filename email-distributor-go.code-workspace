@@ -1,0 +1,20 @@
+{
+  "folders": [
+    {
+      "path": "./"
+    },
+    {
+      "path": "./api"
+    },
+    {
+      "path": "./batch-send"
+    },
+    {
+      "path": "./batch-send-feedback"
+    },
+    {
+      "path": "./shared"
+    }
+  ],
+  "settings": {}
+}
