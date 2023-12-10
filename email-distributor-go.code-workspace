@@ -4,16 +4,20 @@
       "path": "./"
     },
     {
-      "path": "./api"
+      "name": "cmd/api",
+      "path": "./cmd/api"
     },
     {
-      "path": "./batch-send"
+      "name": "cmd/batch_send",
+      "path": "./cmd/batch_send"
     },
     {
-      "path": "./batch-send-feedback"
+      "name": "cmd/batch_send_feedback",
+      "path": "./cmd/batch_send_feedback"
     },
     {
-      "path": "./shared"
+      "name": "pkg/email_distributor",
+      "path": "./pkg/email_distributor"
     }
   ],
   "settings": {}

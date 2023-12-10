@@ -1,4 +1,4 @@
-module batch-single-send
+module github.com/lyrise/email-distributor-go/cmd/batch_send
 
 go 1.21.1
 
