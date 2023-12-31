@@ -1,7 +1,18 @@
 package main
 
-import "github.com/lyrise/email-distributor-go/pkg/email_distributor"
+import (
+	"github.com/lyrise/email-distributor-go/cmd/api/common"
+)
 
 func main() {
-	email_distributor.HelloWorld()
+	info := common.NewAppInfo()
+
+	logger := common.NewLogger(info.Mode)
+	defer logger.Sync()
+
+	logger.Info("----- START -----")
+
+	// migrator := migration.NewMySQLMigrator()
+
+	// email_distributor.HelloWorld()
 }

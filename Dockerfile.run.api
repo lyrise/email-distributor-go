@@ -1,0 +1,15 @@
+FROM debian:bullseye AS runtime
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y \
+    pkg-config \
+    libssl-dev \
+    ca-certificates \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY ./conf/migrations ./conf/migrations
+COPY ./bin/api/opxs-api /usr/local/bin/
+
+ENTRYPOINT ["/usr/local/bin/opxs-api"]

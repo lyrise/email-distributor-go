@@ -1,8 +1,8 @@
-export GOTOOLCHAIN=go1.21.1
+export GOTOOLCHAIN=go1.21.3
 export GOEXPERIMENTALS=loopvar
 
-test:
-	go test -v ./...
+install:
+	go install github.com/onsi/ginkgo/v2/ginkgo
 
-deploy-dev:
-	./deploy-dev.sh
+test:
+	ginkgo -r

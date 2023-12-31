@@ -1,0 +1,26 @@
+FROM golang:1.21.3-bullseye
+
+ARG GIT_VERSION
+ARG GIT_REVISION
+ARG BUILD_TIMESTAMP
+
+WORKDIR /app
+
+ENV GOEXPERIMENTALS=loopvar
+
+# Copy dependencies
+COPY ./refs ./refs
+COPY ./pkg ./pkg
+
+WORKDIR /app/cmd/api
+COPY ./cmd/api/go.mod ./cmd/api/go.sum ./
+RUN go mod download
+
+COPY ./cmd/api .
+RUN go build \
+    -o email-distributor-api \
+    -ldflags " \
+    -X common.gitSemver=$GIT_SEMVER \
+    -X common.gitSha=$GIT_SHA \
+    -X common.buildTimestamp=$BUILD_TIMESTAMP \
+    "

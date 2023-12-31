@@ -18,6 +18,10 @@
     {
       "name": "pkg/email_distributor",
       "path": "./pkg/email_distributor"
+    },
+    {
+      "name": "refs/core-go",
+      "path": "./refs/core-go"
     }
   ],
   "settings": {}
