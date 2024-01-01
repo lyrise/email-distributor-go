@@ -1,4 +1,11 @@
 services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.run.api
+    environment:
+      RUN_MODE: local
+
   database:
     image: mysql:8.2
     environment:

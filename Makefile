@@ -1,3 +1,7 @@
+run:
+	./build-api.sh
+	docker compose up --build
+
 install:
 	make -C ./cmd/api install
 	make -C ./cmd/batch_send install

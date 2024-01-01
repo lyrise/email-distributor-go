@@ -36,7 +36,6 @@ COPY ./cmd/batch_send ./cmd/batch_send
 # Build
 ARG GIT_VERSION
 ARG GIT_REVISION
-ARG BUILD_TIMESTAMP
 
 WORKDIR /app/cmd/batch_send
 RUN go build \
@@ -44,7 +43,6 @@ RUN go build \
     -ldflags " \
     -X common.gitSemver=$GIT_SEMVER \
     -X common.gitSha=$GIT_SHA \
-    -X common.buildTimestamp=$BUILD_TIMESTAMP \
     "
 
 FROM builder AS batch-send-feedback-builder
@@ -67,7 +65,6 @@ COPY ./cmd/batch_send_feedback ./cmd/batch_send_feedback
 # Build
 ARG GIT_VERSION
 ARG GIT_REVISION
-ARG BUILD_TIMESTAMP
 
 WORKDIR /app/cmd/batch_send_feedback
 RUN go build \
@@ -75,7 +72,6 @@ RUN go build \
     -ldflags " \
     -X common.gitSemver=$GIT_SEMVER \
     -X common.gitSha=$GIT_SHA \
-    -X common.buildTimestamp=$BUILD_TIMESTAMP \
     "
 
 FROM public.ecr.aws/lambda/provided:al2 AS runner
