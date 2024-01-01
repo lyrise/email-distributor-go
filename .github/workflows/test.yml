@@ -1,0 +1,56 @@
+name: test
+
+on: [push]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test-cmd-api:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./cmd/api
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version-file: "go.mod"
+      - name: Install dependencies
+        run: make install
+      - name: Test with Go
+        run: make test
+
+  test-cmd-batch-send:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./cmd/batch_send
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version-file: "go.mod"
+      - name: Install dependencies
+        run: make install
+      - name: Test with Go
+        run: make test
+
+  test-pkg-email-distributor:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./pkg/email_distributor
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version-file: "go.mod"
+      - name: Install dependencies
+        run: make install
+      - name: Test with Go
+        run: make test
