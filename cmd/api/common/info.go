@@ -6,9 +6,8 @@ import (
 )
 
 var (
-	gitSemver      string
-	gitSha         string
-	buildTimestamp string
+	gitSemver string
+	gitSha    string
 )
 
 type RunMode string
@@ -21,10 +20,9 @@ const (
 )
 
 type AppInfo struct {
-	Mode           RunMode
-	GitSemver      string
-	GitSha         string
-	BuildTimestamp string
+	Mode      RunMode
+	GitSemver string
+	GitSha    string
 }
 
 func NewAppInfo() *AppInfo {
@@ -45,14 +43,13 @@ func NewAppInfo() *AppInfo {
 	}
 
 	return &AppInfo{
-		Mode:           runMode,
-		GitSemver:      gitSemver,
-		GitSha:         gitSha,
-		BuildTimestamp: buildTimestamp,
+		Mode:      runMode,
+		GitSemver: gitSemver,
+		GitSha:    gitSha,
 	}
 }
 
 func (a AppInfo) String() string {
-	return fmt.Sprintf("mode: %s, git_semver: %s, git_sha: %s, build_timestamp: %s",
-		a.Mode, a.GitSemver, a.GitSha, a.BuildTimestamp)
+	return fmt.Sprintf("mode: %s, git_semver: %s, git_sha: %s",
+		a.Mode, a.GitSemver, a.GitSha)
 }

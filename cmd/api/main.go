@@ -9,7 +9,6 @@ func main() {
 
 	logger := common.NewLogger(info.Mode)
 	defer logger.Sync()
-
 	logger.Info("----- START -----")
 
 	// migrator := migration.NewMySQLMigrator()
