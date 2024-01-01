@@ -31,6 +31,6 @@ RUN go build \
     -X common.gitSha=$GIT_SHA \
     "
 
-FROM golang:1.21.3-bullseye AS runner
+FROM golang:1.21.3-bullseye AS runtime
 
 COPY --from=builder /bin/api /bin/api

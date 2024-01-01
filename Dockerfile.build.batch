@@ -74,7 +74,7 @@ RUN go build \
     -X common.gitSha=$GIT_SHA \
     "
 
-FROM public.ecr.aws/lambda/provided:al2 AS runner
+FROM public.ecr.aws/lambda/provided:al2 AS runtime
 
 COPY --from=batch-send-builder /bin/batch-send /bin/batch-send
 COPY --from=batch-send-feedback-builder /bin/batch-send-feedback /bin/batch-send-feedback
