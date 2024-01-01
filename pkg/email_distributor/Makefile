@@ -5,4 +5,4 @@ install:
 	go install github.com/onsi/ginkgo/v2/ginkgo
 
 test:
-	go test -v ./...
+	ginkgo -r

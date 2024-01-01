@@ -1,4 +1,4 @@
-package email_distributor
+package main
 
 func HelloWorld() {
 	println("Hello World!")

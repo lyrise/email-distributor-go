@@ -24,6 +24,7 @@ ENV GOEXPERIMENTALS=loopvar
 COPY ./refs ./refs
 COPY ./pkg ./pkg
 
+# batch_send
 WORKDIR /app/cmd/batch_send
 COPY cmd/batch_send/go.mod cmd/batch_send/go.sum ./
 RUN go mod download
@@ -31,6 +32,20 @@ RUN go mod download
 COPY ./cmd/batch_send .
 RUN go build \
     -o email-distributor-batch-send \
+    -ldflags " \
+    -X common.gitSemver=$GIT_SEMVER \
+    -X common.gitSha=$GIT_SHA \
+    -X common.buildTimestamp=$BUILD_TIMESTAMP \
+    "
+
+# batch_send_feedback
+WORKDIR /app/cmd/batch_send_feedback
+COPY cmd/batch_send_feedback/go.mod cmd/batch_send_feedback/go.sum ./
+RUN go mod download
+
+COPY ./cmd/batch_send_feedback .
+RUN go build \
+    -o email-distributor-batch-send-feedback \
     -ldflags " \
     -X common.gitSemver=$GIT_SEMVER \
     -X common.gitSha=$GIT_SHA \
