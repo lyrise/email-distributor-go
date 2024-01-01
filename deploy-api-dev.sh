@@ -9,7 +9,7 @@ DOCKER_IMAGE="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/email-distri
 
 aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
 
-if ! docker build -f "./Dockerfile.run.api" -t "${DOCKER_IMAGE}" --force-rm=true .; then
+if ! docker buildx build --platform linux/amd64 -f "./Dockerfile.run.api" -t "${DOCKER_IMAGE}" --force-rm=true .; then
     echo "Failed to build docker image"
     exit 1
 fi

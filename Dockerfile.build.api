@@ -1,26 +1,38 @@
-FROM golang:1.21.3-bullseye
-
-ARG GIT_VERSION
-ARG GIT_REVISION
-ARG BUILD_TIMESTAMP
+FROM golang:1.21.3-bullseye AS builder
 
 WORKDIR /app
 
 ENV GOEXPERIMENTALS=loopvar
 
-# Copy dependencies
-COPY ./refs ./refs
-COPY ./pkg ./pkg
-
+# Download dependencies
+WORKDIR /app/refs/core-go
+COPY ./refs/core-go/go.mod ./refs/core-go/go.sum ./
+WORKDIR /app/pkg/email_distributor
+COPY ./pkg/email_distributor/go.mod ./pkg/email_distributor/go.sum ./
 WORKDIR /app/cmd/api
 COPY ./cmd/api/go.mod ./cmd/api/go.sum ./
 RUN go mod download
 
-COPY ./cmd/api .
+# Copy source codes
+WORKDIR /app
+COPY ./refs ./refs
+COPY ./pkg ./pkg
+COPY ./cmd/api ./cmd/api
+
+# Build
+ARG GIT_VERSION
+ARG GIT_REVISION
+ARG BUILD_TIMESTAMP
+
+WORKDIR /app/cmd/api
 RUN go build \
-    -o email-distributor-api \
+    -o /bin/api \
     -ldflags " \
     -X common.gitSemver=$GIT_SEMVER \
     -X common.gitSha=$GIT_SHA \
     -X common.buildTimestamp=$BUILD_TIMESTAMP \
     "
+
+FROM golang:1.21.3-bullseye AS runner
+
+COPY --from=builder /bin/api /bin/api

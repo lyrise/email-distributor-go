@@ -1,4 +1,4 @@
-FROM public.ecr.aws/lambda/provided:al2
+FROM public.ecr.aws/lambda/provided:al2 AS builder
 
 # Install Go
 RUN yum -y update && \
@@ -12,42 +12,73 @@ RUN yum -y update && \
 # Add Go to the PATH
 ENV PATH="/usr/local/go/bin:${PATH}"
 
-ARG GIT_VERSION
-ARG GIT_REVISION
-ARG BUILD_TIMESTAMP
-
 WORKDIR /app
 
 ENV GOEXPERIMENTALS=loopvar
 
-# Copy dependencies
+FROM builder AS batch-send-builder
+
+# Download dependencies
+WORKDIR /app/refs/core-go
+COPY ./refs/core-go/go.mod ./refs/core-go/go.sum ./
+WORKDIR /app/pkg/email_distributor
+COPY ./pkg/email_distributor/go.mod ./pkg/email_distributor/go.sum ./
+WORKDIR /app/cmd/batch_send
+COPY ./cmd/batch_send/go.mod ./cmd/batch_send/go.sum ./
+RUN go mod download
+
+# Copy source codes
+WORKDIR /app
 COPY ./refs ./refs
 COPY ./pkg ./pkg
+COPY ./cmd/batch_send ./cmd/batch_send
 
-# batch_send
+# Build
+ARG GIT_VERSION
+ARG GIT_REVISION
+ARG BUILD_TIMESTAMP
+
 WORKDIR /app/cmd/batch_send
-COPY cmd/batch_send/go.mod cmd/batch_send/go.sum ./
-RUN go mod download
-
-COPY ./cmd/batch_send .
 RUN go build \
-    -o email-distributor-batch-send \
+    -o /bin/batch-send \
     -ldflags " \
     -X common.gitSemver=$GIT_SEMVER \
     -X common.gitSha=$GIT_SHA \
     -X common.buildTimestamp=$BUILD_TIMESTAMP \
     "
 
-# batch_send_feedback
+FROM builder AS batch-send-feedback-builder
+
+# Download dependencies
+WORKDIR /app/refs/core-go
+COPY ./refs/core-go/go.mod ./refs/core-go/go.sum ./
+WORKDIR /app/pkg/email_distributor
+COPY ./pkg/email_distributor/go.mod ./pkg/email_distributor/go.sum ./
 WORKDIR /app/cmd/batch_send_feedback
-COPY cmd/batch_send_feedback/go.mod cmd/batch_send_feedback/go.sum ./
+COPY ./cmd/batch_send_feedback/go.mod ./cmd/batch_send_feedback/go.sum ./
 RUN go mod download
 
-COPY ./cmd/batch_send_feedback .
+# Copy source codes
+WORKDIR /app
+COPY ./refs ./refs
+COPY ./pkg ./pkg
+COPY ./cmd/batch_send_feedback ./cmd/batch_send_feedback
+
+# Build
+ARG GIT_VERSION
+ARG GIT_REVISION
+ARG BUILD_TIMESTAMP
+
+WORKDIR /app/cmd/batch_send_feedback
 RUN go build \
-    -o email-distributor-batch-send-feedback \
+    -o /bin/batch-send-feedback \
     -ldflags " \
     -X common.gitSemver=$GIT_SEMVER \
     -X common.gitSha=$GIT_SHA \
     -X common.buildTimestamp=$BUILD_TIMESTAMP \
     "
+
+FROM public.ecr.aws/lambda/provided:al2 AS runner
+
+COPY --from=batch-send-builder /bin/batch-send /bin/batch-send
+COPY --from=batch-send-feedback-builder /bin/batch-send-feedback /bin/batch-send-feedback
