@@ -4,10 +4,12 @@ import (
 	"net"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/getkin/kin-openapi/openapi3"
+	chiMiddleware "github.com/go-chi/chi/middleware"
 	"github.com/go-chi/chi/v5"
-	middleware "github.com/oapi-codegen/nethttp-middleware"
+	oapiMiddleware "github.com/oapi-codegen/nethttp-middleware"
 	httpSwagger "github.com/swaggo/http-swagger"
 	"go.uber.org/zap"
 
@@ -15,23 +17,17 @@ import (
 )
 
 type ApiServer struct {
-	logger *zap.Logger
 }
 
 func NewApiServer(logger *zap.Logger) *http.Server {
 	router := chi.NewRouter()
 
-	// Add handler
-	serverImpl := newServerImpl()
-	openapi.HandlerFromMux(serverImpl, router)
-
-	// Add swagger docs
-	router.Get("/api/openapi.yml", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "./openapi.yml")
-	})
-	router.Get("/api/docs/*", httpSwagger.Handler(
-		httpSwagger.URL("/api/openapi.yml"),
-	))
+	// Add base middleware
+	router.Use(chiMiddleware.RequestID)
+	router.Use(chiMiddleware.RealIP)
+	router.Use(chiMiddleware.Logger)
+	router.Use(chiMiddleware.Recoverer)
+	router.Use(chiMiddleware.Timeout(60 * time.Second))
 
 	// Add request validation
 	swagger, err := openapi.GetSwagger()
@@ -42,7 +38,19 @@ func NewApiServer(logger *zap.Logger) *http.Server {
 	swagger.Servers = nil
 	swagger.AddOperation("/api/openapi.yml", "GET", &openapi3.Operation{})
 	swagger.AddOperation("/api/docs/{path}", "GET", &openapi3.Operation{})
-	router.Use(middleware.OapiRequestValidator(swagger))
+	router.Use(oapiMiddleware.OapiRequestValidator(swagger))
+
+	// Add swagger docs
+	router.Get("/api/openapi.yml", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "./openapi.yml")
+	})
+	router.Get("/api/docs/*", httpSwagger.Handler(
+		httpSwagger.URL("/api/openapi.yml"),
+	))
+
+	// Add handler
+	serverImpl := newServerImpl(logger)
+	openapi.HandlerFromMux(serverImpl, router)
 
 	server := &http.Server{
 		Handler: router,
