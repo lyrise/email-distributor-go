@@ -24,5 +24,10 @@
       "path": "./refs/core-go"
     }
   ],
-  "settings": {}
+"settings": {
+    "cSpell.words": [
+        "Oapi",
+        "openapi"
+    ]
+}
 }

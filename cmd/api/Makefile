@@ -7,7 +7,7 @@ install:
 
 gen:
 	oapi-codegen -generate "types" -package openapi openapi.yml > ./openapi/types.gen.go
-	oapi-codegen -generate "echo-server" -package openapi openapi.yml > ./openapi/server.gen.go
+	oapi-codegen -generate "chi-server" -package openapi openapi.yml > ./openapi/server.gen.go
 	oapi-codegen -generate "spec" -package openapi openapi.yml > ./openapi/spec.gen.go
 
 test:

@@ -3,6 +3,8 @@ package common
 import (
 	"fmt"
 	"os"
+
+	"go.uber.org/zap/zapcore"
 )
 
 var (
@@ -23,6 +25,13 @@ type AppInfo struct {
 	Mode      RunMode
 	GitSemver string
 	GitSha    string
+}
+
+func (a *AppInfo) MarshalLogObject(enc zapcore.ObjectEncoder) error {
+	enc.AddString("mode", string(a.Mode))
+	enc.AddString("gitSemver", a.GitSemver)
+	enc.AddString("gitSha", a.GitSha)
+	return nil
 }
 
 func NewAppInfo() *AppInfo {

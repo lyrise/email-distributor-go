@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 COPY ./conf/migrations ./conf/migrations
+COPY ./cmd/api/openapi.yml ./openapi.yml
 COPY ./bin/api/email-distributor-api /usr/local/bin/
 
 ENTRYPOINT ["/usr/local/bin/email-distributor-api"]

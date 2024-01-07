@@ -9,10 +9,10 @@ func NewLogger(mode RunMode) *zap.Logger {
 	var err error
 
 	switch mode {
-	case "prd":
-		logger, err = zap.NewProduction()
-	default:
+	case "local":
 		logger, err = zap.NewDevelopment()
+	default:
+		logger, err = zap.NewProduction()
 	}
 
 	if err != nil {

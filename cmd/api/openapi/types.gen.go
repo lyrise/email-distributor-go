@@ -12,35 +12,16 @@ type Error struct {
 	Message string `json:"message"`
 }
 
-// NewPet defines model for NewPet.
-type NewPet struct {
-	// Name Name of the pet
-	Name string `json:"name"`
-
-	// Tag Type of the pet
-	Tag *string `json:"tag,omitempty"`
+// SendEmail defines model for SendEmail.
+type SendEmail struct {
+	Body *struct {
+		Html *string `json:"html,omitempty"`
+		Text *string `json:"text,omitempty"`
+	} `json:"body,omitempty"`
+	FromEmailAddress *string `json:"fromEmailAddress,omitempty"`
+	Title            *string `json:"title,omitempty"`
+	ToEmailAddress   *string `json:"toEmailAddress,omitempty"`
 }
 
-// Pet defines model for Pet.
-type Pet struct {
-	// Id Unique id of the pet
-	Id int64 `json:"id"`
-
-	// Name Name of the pet
-	Name string `json:"name"`
-
-	// Tag Type of the pet
-	Tag *string `json:"tag,omitempty"`
-}
-
-// FindPetsParams defines parameters for FindPets.
-type FindPetsParams struct {
-	// Tags tags to filter by
-	Tags *[]string `form:"tags,omitempty" json:"tags,omitempty"`
-
-	// Limit maximum number of results to return
-	Limit *int32 `form:"limit,omitempty" json:"limit,omitempty"`
-}
-
-// AddPetJSONRequestBody defines body for AddPet for application/json ContentType.
-type AddPetJSONRequestBody = NewPet
+// SendEmailJSONRequestBody defines body for SendEmail for application/json ContentType.
+type SendEmailJSONRequestBody = SendEmail

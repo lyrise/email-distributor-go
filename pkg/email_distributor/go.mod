@@ -1,6 +1,6 @@
 module github.com/lyrise/email-distributor-go/pkg/email_distributor
 
-go 1.21.1
+go 1.21.3
 
 require (
 	github.com/onsi/ginkgo/v2 v2.13.2
