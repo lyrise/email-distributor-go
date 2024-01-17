@@ -4,7 +4,7 @@ go 1.21.3
 
 replace (
 	github.com/lyrise/email-distributor-go/pkg/email_distributor => ../../pkg/email_distributor
-	github.com/omnius-labs/core-go => ../../refs/core-go
+	github.com/omnius-labs/core-go/pkg/migration => ../../refs/core-go/pkg/migration
 )
 
 require (

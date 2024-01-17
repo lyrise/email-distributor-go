@@ -22,6 +22,18 @@
     {
       "name": "refs/core-go",
       "path": "./refs/core-go"
+    },
+    {
+      "name": "refs/core-go/pkg/base",
+      "path": "./refs/core-go/pkg/base"
+    },
+    {
+      "name": "refs/core-go/pkg/cloud_aws",
+      "path": "./refs/core-go/pkg/cloud_aws"
+    },
+    {
+      "name": "refs/core-go/pkg/migration",
+      "path": "./refs/core-go/pkg/migration"
     }
   ],
 "settings": {
