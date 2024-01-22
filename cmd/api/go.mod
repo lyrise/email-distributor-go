@@ -1,6 +1,6 @@
 module github.com/lyrise/email-distributor-go/cmd/api
 
-go 1.21.3
+go 1.21.6
 
 replace (
 	github.com/lyrise/email-distributor-go/pkg/email_distributor => ../../pkg/email_distributor

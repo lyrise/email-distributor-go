@@ -1,4 +1,4 @@
-FROM golang:1.21.3-bullseye AS builder
+FROM golang:1.21.6-bullseye AS builder
 
 WORKDIR /app
 
@@ -35,6 +35,6 @@ RUN go build \
     -X common.gitSha=$GIT_SHA \
     "
 
-FROM golang:1.21.3-bullseye AS runtime
+FROM golang:1.21.6-bullseye AS runtime
 
 COPY --from=builder /bin/api /bin/api

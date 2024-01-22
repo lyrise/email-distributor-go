@@ -1,6 +1,6 @@
 module github.com/lyrise/email-distributor-go/cmd/batch_send_feedback
 
-go 1.21.3
+go 1.21.6
 
 require (
 	github.com/onsi/ginkgo/v2 v2.13.2

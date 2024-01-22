@@ -3,9 +3,9 @@ FROM public.ecr.aws/lambda/provided:al2 AS builder
 # Install Go
 RUN yum -y update && \
     yum -y install tar gzip && \
-    curl -o go1.21.3.linux-amd64.tar.gz https://dl.google.com/go/go1.21.3.linux-amd64.tar.gz && \
-    tar -C /usr/local -xzf go1.21.3.linux-amd64.tar.gz && \
-    rm go1.21.3.linux-amd64.tar.gz && \
+    curl -o go1.21.6.linux-amd64.tar.gz https://dl.google.com/go/go1.21.6.linux-amd64.tar.gz && \
+    tar -C /usr/local -xzf go1.21.6.linux-amd64.tar.gz && \
+    rm go1.21.6.linux-amd64.tar.gz && \
     rm -rf /var/cache/yum/* && \
     yum clean all
 

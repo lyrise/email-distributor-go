@@ -1,4 +1,4 @@
-export GOTOOLCHAIN=go1.21.3
+export GOTOOLCHAIN=go1.21.6
 export GOEXPERIMENTALS=loopvar
 
 install:
