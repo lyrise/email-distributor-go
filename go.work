@@ -1,0 +1,11 @@
+go 1.21.4
+
+use (
+	./cmd/api
+	./cmd/batch_send
+	./cmd/batch_send_feedback
+	./pkg/email_distributor
+	./refs/core-go/pkg/base
+	./refs/core-go/pkg/cloud_aws
+	./refs/core-go/pkg/migration
+)

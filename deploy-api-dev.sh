@@ -15,4 +15,4 @@ if ! docker buildx build --platform linux/amd64 -f "./Dockerfile.run.api" -t "${
 fi
 
 docker push "${DOCKER_IMAGE}"
-aws ecs update-service --cluster email-distributor-api-ecs-cluster --service email-distributor-api-ecs-service --force-new-deployment
+aws ecs update-service --region ${AWS_REGION}  --cluster email-distributor-api-ecs-cluster --service email-distributor-api-ecs-service --force-new-deployment

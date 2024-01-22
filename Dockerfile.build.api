@@ -5,8 +5,12 @@ WORKDIR /app
 ENV GOEXPERIMENTALS=loopvar
 
 # Download dependencies
-WORKDIR /app/refs/core-go
-COPY ./refs/core-go/go.mod ./refs/core-go/go.sum ./
+WORKDIR /app/refs/core-go/pkg/base
+COPY ./refs/core-go/pkg/base/go.mod ./refs/core-go/pkg/base/go.sum ./
+WORKDIR /app/refs/core-go/pkg/cloud_aws
+COPY ./refs/core-go/pkg/cloud_aws/go.mod ./refs/core-go/pkg/cloud_aws/go.sum ./
+WORKDIR /app/refs/core-go/pkg/migration
+COPY ./refs/core-go/pkg/migration/go.mod ./refs/core-go/pkg/migration/go.sum ./
 WORKDIR /app/pkg/email_distributor
 COPY ./pkg/email_distributor/go.mod ./pkg/email_distributor/go.sum ./
 WORKDIR /app/cmd/api

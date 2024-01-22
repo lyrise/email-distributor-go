@@ -28,4 +28,4 @@ fi
 
 docker push "${DOCKER_IMAGE}"
 
-aws lambda update-function-code --function-name email-distributor-$1-lambda --image-uri ${DOCKER_IMAGE}
+aws lambda --region ${AWS_REGION} update-function-code --function-name email-distributor-$1-lambda --image-uri ${DOCKER_IMAGE}
